@@ -1,8 +1,10 @@
 // SPAPP SETUP
 $(document).ready(function () {
+  // Initialize SPApp
   var app = $.spapp({
-    pageNotFound: 'error_404',
-    templateDir: './tpl/'
+    defaultView: "home",     
+    templateDir: "./tpl/",   
+    pageNotFound: "error_404"
   });
 
   var eventsData = [
@@ -46,7 +48,6 @@ $(document).ready(function () {
     var $search = $("#events-search");
     var $cat    = $("#events-category");
 
-    // Filter matching events based on search query and category selection.
     function matches(ev) {
       var q = $search.length ? ($search.val() || '').toLowerCase() : '';
       var cat = $cat.length ? ($cat.val() || 'All') : 'All';
@@ -56,7 +57,6 @@ $(document).ready(function () {
       return titleMatch && catMatch;
     }
 
-    // Show those that match current filters
     function render() {
       var filtered = [];
       for (var i = 0; i < eventsData.length; i++) {
@@ -65,8 +65,7 @@ $(document).ready(function () {
       renderEventsCards($list, filtered);
     }
 
-    // initial draw + bind filters if present
-    render();
+    render(); // initial draw
     if ($search.length && !$search.data("bound")) {
       $search.on('input', render).data("bound", true);
     }
@@ -75,35 +74,10 @@ $(document).ready(function () {
     }
   }
 
-  // Routes
-  app.route({ view: 'home',          load: 'home.html' });
-  app.route({ view: 'events',        load: 'events.html',        onReady: renderEventsPage });
-  app.route({ view: 'event-details', load: 'event-details.html' });
-  app.route({ view: 'venues',        load: 'venues.html' });
-  app.route({ view: 'tickets',       load: 'tickets.html' });
-  app.route({ view: 'login',         load: 'login.html' });
-  app.route({ view: 'register',      load: 'register.html' });
-  app.route({ view: 'profile',       load: 'profile.html' });
-  app.route({ view: 'error_404',     load: '404.html' });
-
-  // Default route
-  if (!window.location.hash) {
-    window.location.hash = '#home';
-  }
-
+  app.route({ view: 'events', onReady: renderEventsPage });
   app.run();
 
-  // Show only the current section
-  function showOnlyTarget() {
-    var target = window.location.hash ? window.location.hash.substring(1) : 'home';
-    $('#spapp > section').hide();
-    $('#' + target).show();
-  }
-  showOnlyTarget();
-  $(window).on('hashchange', showOnlyTarget);
-  $(document).on("spapp:ready", showOnlyTarget);
-
-  // Navbar highlight
+  // Navbar active link highlight
   function setActiveLink() {
     var hash = window.location.hash || "#home";
     $(".nav-link").removeClass("active");
