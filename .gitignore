@@ -1,3 +1,13 @@
-/vendor/
+backend/rest/vendor/
+
 .env
 *.log
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+__MACOSX/
+*.bak
+*.tmp
