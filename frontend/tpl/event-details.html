@@ -1,13 +1,20 @@
 <div class="py-4">
-  <a href="#events" class="btn btn-outline-light btn-sm mb-3">Back to Events</a>
   <div class="card p-4">
-    <h2>Event Details</h2>
-    <p class="text-muted">This page will fetch live details by id</p>
-    <ul class="mb-0">
-      <li><strong>Title:</strong> Placeholder Event</li>
-      <li><strong>Date:</strong> 2025-11-01</li>
-      <li><strong>Venue:</strong> City Hall</li>
-      <li><strong>Category:</strong> Music</li>
-    </ul>
+    <h2 id="event-details-title" class="mb-3"></h2>
+
+    <p><strong>Date:</strong> <span id="event-details-date"></span></p>
+    <p><strong>Venue:</strong> <span id="event-details-venue"></span></p>
+    <p><strong>Category:</strong> <span id="event-details-category"></span></p>
+
+    <hr class="my-3">
+
+    <h5>Description</h5>
+    <p id="event-details-description"></p>
+
+    <div id="event-details-message"
+         class="small text-warning mt-2"></div>
   </div>
 </div>
+
+
+

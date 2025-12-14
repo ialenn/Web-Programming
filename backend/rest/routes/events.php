@@ -100,6 +100,11 @@ Flight::route('GET /events/@id', function ($id) {
  * )
  */
 Flight::route('POST /events', function () {
+
+    $mw = Flight::get('auth_middleware');
+    $mw->require_admin();
+    $mw->validate_required(['title', 'starts_at', 'venue_id']);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('event_service')->create($data));
 });
@@ -143,6 +148,9 @@ Flight::route('POST /events', function () {
  * )
  */
 Flight::route('PUT /events/@id', function ($id) {
+
+    Flight::get('auth_middleware')->require_admin();
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('event_service')->update($id, $data));
 });
@@ -166,6 +174,9 @@ Flight::route('PUT /events/@id', function ($id) {
  * )
  */
 Flight::route('DELETE /events/@id', function ($id) {
+
+    Flight::get('auth_middleware')->require_admin();
+
     Flight::get('event_service')->delete($id);
     Flight::json(['message' => 'Event deleted successfully']);
 });

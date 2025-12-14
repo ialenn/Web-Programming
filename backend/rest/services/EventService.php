@@ -24,14 +24,21 @@ class EventService extends BaseService {
     return $this->dao->get_by_venue($venue_id);
   }
 
-  // CREATE
-  public function create($data) {
-    if (empty($data['title']))     throw new Exception("title is required");
-    if (empty($data['starts_at'])) throw new Exception("starts_at is required");
-    if (empty($data['venue_id']))  throw new Exception("venue_id is required");
+public function create($data) {
+  if (empty($data['title']))     throw new Exception("title is required");
+  if (empty($data['starts_at'])) throw new Exception("starts_at is required");
+  if (empty($data['venue_id']))  throw new Exception("venue_id is required");
 
-    return parent::create($data); // BaseService->create -> dao->insert
+  if (!empty($data['starts_at'])) {
+      $data['starts_at'] = str_replace("T", " ", $data['starts_at']) . ":00";
   }
+
+  if (!empty($data['ends_at'])) {
+      $data['ends_at'] = str_replace("T", " ", $data['ends_at']) . ":00";
+  }
+
+  return parent::create($data);
+}
 
   // UPDATE
   public function update($id, $data) {

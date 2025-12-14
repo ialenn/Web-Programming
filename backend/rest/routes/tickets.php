@@ -88,9 +88,16 @@ Flight::route('GET /tickets/@id', function ($id) {
  * )
  */
 Flight::route('POST /tickets', function () {
+
+    $mw = Flight::get('auth_middleware');
+
+    $mw->validate_required(['event_id', 'user_id', 'price']);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('ticket_service')->create($data));
 });
+
+
 
 /**
  * @OA\Put(
@@ -125,6 +132,9 @@ Flight::route('POST /tickets', function () {
  * )
  */
 Flight::route('PUT /tickets/@id', function ($id) {
+
+    Flight::get('auth_middleware')->require_admin();
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('ticket_service')->update($id, $data));
 });

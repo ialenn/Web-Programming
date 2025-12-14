@@ -65,3 +65,49 @@ CREATE TABLE tickets (
   CONSTRAINT fk_tickets_users FOREIGN KEY (user_id) REFERENCES users(id)
     ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
+
+INSERT INTO roles (id, name) VALUES
+(1, 'admin'),
+(2, 'user');
+
+INSERT INTO users (id, name, email, password_hash, role_id, created_at) VALUES
+(2, 'Admin User', 'admin@example.com', '$2y$10$QqkG3PpBqsI0mxq2FqASeutmC5V6bsxG6IlNm2jE2SbPZsm6P0G7O', 1, '2025-12-08 22:31:12'),
+(3, 'Super Admin', 'superadmin@gmail.com', '$2y$10$QqkG3PpBqsI0mxq2FqASeutmC5V6bsxG6IlNm2jE2SbPZsm6P0G7O', 1, '2025-12-08 22:33:57'),
+(4, 'Admin 2', 'admin2@gmail.com', '$2y$10$1ozC.wpZ366lG8BD6aISvOuwDAnX6P/5IXecOJagkpSplHkaaaivG', 1, '2025-12-08 22:38:54'),
+(8, 'Alen', 'alen@gmail.com', '$2y$10$l/3SjUlE1ef2SOkzZsrEuujT54Jt8ppyds2Ihuw1yYzjyzcTK5yHW', 2, '2025-12-09 00:45:45'),
+(9, 'a', 'a@gmail.com', '$2y$10$US9MAgsGufGJJFZRh0rtPOdNYyjDd0vDv/V2c.bcegX6c9qJ4R8nO', 2, '2025-12-10 19:20:23');
+
+INSERT INTO venues (id, name, address, capacity) VALUES
+(1, 'Vijecnica', 'Obala Kulina bana 1', 1000),
+(2, 'Skenderija', 'Terezija bb', 5000);
+
+INSERT INTO categories (id, name, description) VALUES
+(1, 'Music', 'Concerts and live music'),
+(2, 'Food', 'Food festivals and street food'),
+(3, 'Sports', 'Sporting events'),
+(4, 'Culture', 'Theatre, art and exhibitions');
+
+INSERT INTO events (
+  id, title, description, starts_at, ends_at,
+  venue_id, category_id, image_url, status
+) VALUES
+(1, 'Sarajevo Jazz Night',
+ 'A jazz concert featuring local and international artists at Vijećnica.',
+ '2025-11-01 20:00:00', '2025-11-01 23:00:00',
+ 1, 1, NULL, 'published'),
+
+(2, 'Winter Festival',
+ 'A festive celebration.',
+ '2025-12-15 10:00:00', '2025-12-20 22:00:00',
+ 2, 2, NULL, 'published'),
+
+(3, 'Admin Only Test',
+ 'Event created by admin2',
+ '2026-01-01 20:00:00', NULL,
+ 1, NULL, NULL, 'draft');
+
+INSERT INTO tickets (
+  id, event_id, user_id, price, status, qr_code, purchased_at
+) VALUES
+(12, 1, 9, 10.00, 'reserved', NULL, NULL),
+(14, 1, 4, 10.00, 'reserved', NULL, NULL);

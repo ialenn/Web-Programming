@@ -26,6 +26,7 @@ Flight::set('user_service', new UserService());
  * )
  */
 Flight::route('GET /users', function () {
+    Flight::get('auth_middleware')->require_admin();
     Flight::json(Flight::get('user_service')->getAll());
 });
 
@@ -58,6 +59,7 @@ Flight::route('GET /users', function () {
  * )
  */
 Flight::route('GET /users/@id', function ($id) {
+    Flight::get('auth_middleware')->require_admin();
     Flight::json(Flight::get('user_service')->getById($id));
 });
 
@@ -89,9 +91,15 @@ Flight::route('GET /users/@id', function ($id) {
  * )
  */
 Flight::route('POST /users', function () {
+
+    $mw = Flight::get('auth_middleware');
+    $mw->require_admin();
+    $mw->validate_required(['name', 'email', 'password']);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('user_service')->create($data));
 });
+
 
 /**
  * @OA\Put(
@@ -127,6 +135,9 @@ Flight::route('POST /users', function () {
  * )
  */
 Flight::route('PUT /users/@id', function ($id) {
+
+    Flight::get('auth_middleware')->require_admin();
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('user_service')->update($id, $data));
 });
@@ -150,6 +161,9 @@ Flight::route('PUT /users/@id', function ($id) {
  * )
  */
 Flight::route('DELETE /users/@id', function ($id) {
+
+    Flight::get('auth_middleware')->require_admin();
+
     Flight::get('user_service')->delete($id);
     Flight::json(['message' => 'User deleted successfully']);
 });

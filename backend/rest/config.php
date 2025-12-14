@@ -1,23 +1,43 @@
 <?php
+
+class Config {
+
+  public static function DB_HOST() {
+    return 'localhost';
+  }
+
+  public static function DB_NAME() {
+    return 'ems';
+  }
+
+  public static function DB_USER() {
+    return 'root';
+  }
+
+  public static function DB_PASSWORD() {
+    return '';
+  }
+
+  public static function JWT_SECRET() {
+    return '12345';
+  }
+}
+
 class Database {
-  private static $host = 'localhost';
-  private static $dbName = 'ems';
-  private static $username = 'root';
-  private static $password = '';
   private static $connection = null;
 
   public static function connect() {
     if (self::$connection === null) {
       try {
         self::$connection = new PDO(
-          "mysql:host=" . self::$host . ";dbname=" . self::$dbName . ";charset=utf8mb4",
-          self::$username,
-          self::$password,
-          [
+          "mysql:host=" . Config::DB_HOST() . ";dbname=" . Config::DB_NAME() . ";charset=utf8mb4",
+          Config::DB_USER(),
+          Config::DB_PASSWORD(),
+          array(
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false // safer prepared statements
-          ]
+            PDO::ATTR_EMULATE_PREPARES => false
+          )
         );
       } catch (PDOException $e) {
         die("Database connection failed: " . $e->getMessage());
