@@ -88,9 +88,15 @@ Flight::route('GET /venues/@id', function ($id) {
  * )
  */
 Flight::route('POST /venues', function () {
+
+    $mw = Flight::get('auth_middleware');
+    $mw->require_admin();
+    $mw->validate_required(['name', 'address', 'capacity']);
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('venue_service')->create($data));
 });
+
 
 /**
  * @OA\Put(
@@ -125,6 +131,9 @@ Flight::route('POST /venues', function () {
  * )
  */
 Flight::route('PUT /venues/@id', function ($id) {
+
+    Flight::get('auth_middleware')->require_admin();
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('venue_service')->update($id, $data));
 });
@@ -148,6 +157,9 @@ Flight::route('PUT /venues/@id', function ($id) {
  * )
  */
 Flight::route('DELETE /venues/@id', function ($id) {
+
+    Flight::get('auth_middleware')->require_admin();
+
     Flight::get('venue_service')->delete($id);
     Flight::json(['message' => 'Venue deleted successfully']);
 });

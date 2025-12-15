@@ -24,6 +24,7 @@ Flight::set('role_service', new RoleService());
  * )
  */
 Flight::route('GET /roles', function () {
+    Flight::get('auth_middleware')->require_admin();
     Flight::json(Flight::get('role_service')->getAll());
 });
 
@@ -54,6 +55,7 @@ Flight::route('GET /roles', function () {
  * )
  */
 Flight::route('GET /roles/@id', function ($id) {
+    Flight::get('auth_middleware')->require_admin();
     Flight::json(Flight::get('role_service')->getById($id));
 });
 
@@ -80,6 +82,9 @@ Flight::route('GET /roles/@id', function ($id) {
  * )
  */
 Flight::route('POST /roles', function () {
+
+    Flight::get('auth_middleware')->require_admin();
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('role_service')->create($data));
 });
@@ -113,6 +118,9 @@ Flight::route('POST /roles', function () {
  * )
  */
 Flight::route('PUT /roles/@id', function ($id) {
+
+    Flight::get('auth_middleware')->require_admin();
+
     $data = Flight::request()->data->getData();
     Flight::json(Flight::get('role_service')->update($id, $data));
 });
@@ -136,6 +144,9 @@ Flight::route('PUT /roles/@id', function ($id) {
  * )
  */
 Flight::route('DELETE /roles/@id', function ($id) {
+
+    Flight::get('auth_middleware')->require_admin();
+
     Flight::get('role_service')->delete($id);
     Flight::json(['message' => 'Role deleted successfully']);
 });

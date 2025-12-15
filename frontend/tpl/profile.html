@@ -1,3 +1,36 @@
 <div class="py-4">
-  <div class="card p-4"><h2>Profile</h2><p class="text-muted">This will show user details and saved events later</p></div>
+  <div class="card p-4">
+    <h2 class="mb-3">Profile</h2>
+
+    <p><strong>Name:</strong> <span id="profile-name"></span></p>
+    <p><strong>Email:</strong> <span id="profile-email"></span></p>
+    <p><strong>Role:</strong> <span id="profile-role"></span></p>
+
+    <button id="btn-logout" class="btn btn-outline-light btn-sm mt-3">
+      Logout
+    </button>
+
+    <div id="profile-admin-box"
+         class="alert alert-secondary mt-3 d-none">
+      You are <strong>admin</strong>.
+      You can manage events, venues, tickets and users from the backend.
+    </div>
+
+    <hr class="my-4">
+
+    <h4>Your Tickets</h4>
+    <div id="profile-tickets-message" class="small text-muted mb-2"></div>
+    <div id="profile-tickets-list" class="list-group"></div>
+
+    <div id="profile-login-warning"
+         class="alert alert-warning mt-3 d-none">
+      You are not logged in. You will be redirected to login.
+    </div>
+  </div>
 </div>
+
+
+
+
+
+
