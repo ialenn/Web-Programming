@@ -3,26 +3,15 @@ function renderVenuesPage() {
 
   var $list = $("#venues-list");
   var $msg  = $("#venues-message");
-  if ($msg.length) {
-    $msg.text("");
-  }
-  if (!$list.length) {
-    return;
-  }
 
-  var headers = {};
-  var token = getToken();
-  if (token) {
-    headers["Authorization"] = token;
-  }
+  if ($msg.length) $msg.text("");
+  if (!$list.length) return;
 
-  $.ajax({
-    url: API_BASE + "/venues",
-    method: "GET",
-    headers: headers,
-    success: function (res) {
+  VenueService.getAll(
+    function (res) {
       var html = "";
-      var i; 
+      var i;
+
       for (i = 0; i < res.length; i++) {
         var v = res[i];
         var name     = v.name || "";
@@ -41,10 +30,8 @@ function renderVenuesPage() {
 
       $list.html(html);
     },
-    error: function () {
-      if ($msg.length) {
-        $msg.text("Could not load venues.");
-      }
+    function () {
+      if ($msg.length) $msg.text("Could not load venues.");
     }
-  });
+  );
 }

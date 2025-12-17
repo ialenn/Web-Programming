@@ -1,55 +1,6 @@
-function buyTicketForEvent(eventId, user, price, onSuccess, onError) {
-  var token = getToken();
-  if (!token) {
-    alert("Missing token. Please login again.");
-    window.location.hash = "#login";
-    return;
-  }
-
-  $.ajax({
-    url: API_BASE + "/tickets",
-    method: "POST",
-    headers: { "Authorization": token },
-    data: {
-      event_id: eventId,
-      user_id:  user.id,
-      price:    price
-    },
-    success: function () { 
-      if (onSuccess) { onSuccess(); } 
-    },
-    error: function () {
-      if (onError) { onError(); }
-    }
-  });
-}
-
-function deleteTicket(ticketId, onSuccess, onError) {
-  var token = getToken();
-  if (!token) {
-    alert("Missing token. Please login again.");
-    window.location.hash = "#login";
-    return;
-  }
-
-  $.ajax({
-    url: API_BASE + "/tickets/" + ticketId,
-    method: "DELETE",
-    headers: { "Authorization": token },
-    success: function () {
-      if (onSuccess) { onSuccess(); }
-    },
-    error: function () {
-      if (onError) { onError(); }
-    }
-  });
-}
-
 function renderTicketsList(events) {
   var $list = $("#tickets-list");
-  if (!$list.length) {
-    return;
-  }
+  if (!$list.length) return;
 
   if (!events || events.length === 0) {
     $list.html('<p class="text-muted">No events available.</p>');
@@ -88,14 +39,10 @@ function setupTicketsPage() {
 
   var user = getCurrentUser();
   var $msg = $("#tickets-message");
-  if ($msg.length) {
-    $msg.text("");
-  }
+  if ($msg.length) $msg.text("");
 
   if (!user) {
-    if ($msg.length) {
-      $msg.text("Please login to buy tickets.");
-    }
+    if ($msg.length) $msg.text("Please login to buy tickets.");
     setTimeout(function () {
       window.location.hash = "#login";
     }, 1500);
@@ -104,9 +51,7 @@ function setupTicketsPage() {
 
   loadEventsFromBackend(function (success) {
     if (!success) {
-      if ($msg.length) {
-        $msg.text("Could not load events for tickets.");
-      }
+      if ($msg.length) $msg.text("Could not load events for tickets.");
       return;
     }
 
@@ -116,16 +61,16 @@ function setupTicketsPage() {
 
     $list.off("click", ".btn-buy-ticket");
     $list.on("click", ".btn-buy-ticket", function () {
-      if ($msg.length) {
-        $msg.text("");
-      }
+      if ($msg.length) $msg.text("");
 
       var eventId = $(this).data("event-id");
 
-      buyTicketForEvent(
-        eventId,
-        user,
-        10,
+      TicketService.buy(
+        {
+          event_id: eventId,
+          user_id: user.id,
+          price: 10
+        },
         function () {
           alert("Ticket purchased!");
         },

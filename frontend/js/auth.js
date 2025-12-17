@@ -4,39 +4,31 @@ function setupLoginPage() {
   updateNavbar();
 
   var $form = $("#login-form");
-  if (!$form.length || $form.data("bound")) {
-    return;
-  }
+  if (!$form.length || $form.data("bound")) return;
 
-  $form.on("submit", function (e) {
-    e.preventDefault();
+  $form.validate({
+    submitHandler: function () {
+      var email    = $("#login-email").val();
+      var password = $("#login-password").val();
 
-    var email    = $("#login-email").val();
-    var password = $("#login-password").val();
+      $("#login-message").text("");
 
-    $("#login-message").text("");
-
-    $.ajax({
-      url: API_BASE + "/auth/login",
-      method: "POST",
-      data: {
-        email:    email,
-        password: password
-      },
-      success: function (res) {
-        if (res && res.success) {
-          saveAuth(res.token, res.user);
-          updateNavbar();
-          alert("Login successful!");
-          window.location.hash = "#home";
-        } else {
-          $("#login-message").text(res.error || "Login failed.");
+      AuthService.login(
+        { email: email, password: password },
+        function (res) {
+          if (res && res.success) {
+            saveAuth(res.token, res.user);
+            updateNavbar();
+            window.location.hash = "#home";
+          } else {
+            $("#login-message").text(res.error || "Login failed.");
+          }
+        },
+        function () {
+          $("#login-message").text("Login failed.");
         }
-      },
-      error: function () {
-        $("#login-message").text("Login failed.");
-      }
-    });
+      );
+    }
   }).data("bound", true);
 }
 // user authentication and profile management in here setup the registration page logic and profile page logic 
@@ -44,39 +36,30 @@ function setupRegisterPage() {
   updateNavbar();
 
   var $form = $("#register-form");
-  if (!$form.length || $form.data("bound")) {
-    return;
-  }
+  if (!$form.length || $form.data("bound")) return;
 
-  $form.on("submit", function (e) {
-    e.preventDefault();
+  $form.validate({
+    submitHandler: function () {
+      var name     = $("#reg-name").val();
+      var email    = $("#reg-email").val();
+      var password = $("#reg-password").val();
 
-    var name     = $("#reg-name").val();
-    var email    = $("#reg-email").val();
-    var password = $("#reg-password").val();
+      $("#register-message").text("");
 
-    $("#register-message").text("");
-
-    $.ajax({
-      url: API_BASE + "/auth/register",
-      method: "POST",
-      data: {
-        name:     name,
-        email:    email,
-        password: password
-      },
-      success: function (res) {
-        if (res && res.success) {
-          alert("Registration successful! You can now login.");
-          window.location.hash = "#login";
-        } else {
-          $("#register-message").text(res.error || "Registration failed.");
+      AuthService.register(
+        { name: name, email: email, password: password },
+        function (res) {
+          if (res && res.success) {
+            window.location.hash = "#login";
+          } else {
+            $("#register-message").text(res.error || "Registration failed.");
+          }
+        },
+        function () {
+          $("#register-message").text("Registration failed.");
         }
-      },
-      error: function () {
-        $("#register-message").text("Registration failed.");
-      }
-    });
+      );
+    }
   }).data("bound", true);
 }
 // profile page setup and ticket management here load user profile data and tickets 
