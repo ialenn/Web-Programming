@@ -42,8 +42,10 @@ Flight::before('start', function (&$params, &$output) {
     strpos($path, '/favicon.ico') === 0 ||
     strpos($path, '/auth/login') === 0 ||
     strpos($path, '/auth/register') === 0 ||
-    strpos($path, '/v1/docs') === 0 ||
-    strpos($path, '/openapi') === 0
+    strpos($path, '/public/v1/docs') === 0 ||
+    strpos($path, '/openapi') === 0 ||
+  strpos($path, '/public/openapi') === 0
+    
   ) {
     return;
   }
