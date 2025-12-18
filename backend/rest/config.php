@@ -3,23 +3,23 @@
 class Config {
 
   public static function DB_HOST() {
-    return getenv('MYSQLHOST');
+    return getenv('DB_HOST') ?: getenv('MYSQLHOST') ?: 'localhost';
   }
 
   public static function DB_PORT() {
-    return getenv('MYSQLPORT') ?: 3306;
+    return getenv('DB_PORT') ?: getenv('MYSQLPORT') ?: 3306;
   }
 
   public static function DB_NAME() {
-    return getenv('MYSQL_DATABASE') ?: getenv('MYSQLDATABASE');
+    return getenv('DB_NAME') ?: getenv('MYSQL_DATABASE') ?: getenv('MYSQLDATABASE');
   }
 
   public static function DB_USER() {
-    return getenv('MYSQLUSER');
+    return getenv('DB_USER') ?: getenv('MYSQLUSER');
   }
 
   public static function DB_PASSWORD() {
-    return getenv('MYSQLPASSWORD');
+    return getenv('DB_PASSWORD') ?: getenv('MYSQLPASSWORD');
   }
 
   public static function JWT_SECRET() {
@@ -53,3 +53,4 @@ class Database {
     return self::$connection;
   }
 }
+?>
