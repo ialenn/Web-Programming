@@ -24,7 +24,10 @@ Flight::before('start', function (&$params, &$output) { // JWT Authentication Mi
 
   $path = Flight::request()->url;
 
-  if (
+if (
+  $path === '/' ||
+  $path === '' ||
+  strpos($path, '/favicon.ico') === 0 ||
   strpos($path, '/auth/login') === 0 ||
   strpos($path, '/auth/register') === 0 ||
   strpos($path, '/docs') === 0 ||
