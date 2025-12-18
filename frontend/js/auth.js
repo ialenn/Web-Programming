@@ -29,7 +29,9 @@ function setupLoginPage() {
         }
       );
     }
-  }).data("bound", true);
+  });
+
+  $form.data("bound", true);
 }
 // user authentication and profile management in here setup the registration page logic and profile page logic 
 function setupRegisterPage() {
@@ -60,7 +62,9 @@ function setupRegisterPage() {
         }
       );
     }
-  }).data("bound", true);
+  });
+
+  $form.data("bound", true);
 }
 // profile page setup and ticket management here load user profile data and tickets 
 function setupProfilePage() {
