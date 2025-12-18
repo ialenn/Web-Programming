@@ -1,4 +1,4 @@
-var API_BASE = "http://localhost/AlenIkanovic/Web-Programming/backend/rest";
+var API_BASE = "https://events-app-z8s7n.ondigitalocean.app";
 
 function saveAuth(token, user) {
   localStorage.setItem("ems_token", token);
