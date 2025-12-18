@@ -11,7 +11,7 @@ class Config {
   }
 
   public static function DB_NAME() {
-    return getenv('MYSQLDATABASE');
+    return getenv('MYSQL_DATABASE') ?: getenv('MYSQLDATABASE');
   }
 
   public static function DB_USER() {
