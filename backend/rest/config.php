@@ -3,23 +3,31 @@
 class Config {
 
   public static function DB_HOST() {
-    return 'localhost';
+    $host = getenv('DB_HOST') ?: '127.0.0.1';
+    if ($host === 'localhost') {
+      $host = '127.0.0.1';
+    }
+    return $host;
+  }
+
+  public static function DB_PORT() {
+    return getenv('DB_PORT') ?: '3306';
   }
 
   public static function DB_NAME() {
-    return 'ems';
+    return getenv('DB_NAME') ?: 'ems';
   }
 
   public static function DB_USER() {
-    return 'root';
+    return getenv('DB_USER') ?: 'root';
   }
 
   public static function DB_PASSWORD() {
-    return '';
+    return getenv('DB_PASSWORD') ?: '';
   }
 
   public static function JWT_SECRET() {
-    return '12345';
+    return getenv('JWT_SECRET') ?: '12345';
   }
 }
 
@@ -29,8 +37,14 @@ class Database {
   public static function connect() {
     if (self::$connection === null) {
       try {
+        $dsn =
+          "mysql:host=" . Config::DB_HOST() .
+          ";port=" . Config::DB_PORT() .
+          ";dbname=" . Config::DB_NAME() .
+          ";charset=utf8mb4";
+
         self::$connection = new PDO(
-          "mysql:host=" . Config::DB_HOST() . ";dbname=" . Config::DB_NAME() . ";charset=utf8mb4",
+          $dsn,
           Config::DB_USER(),
           Config::DB_PASSWORD(),
           array(
